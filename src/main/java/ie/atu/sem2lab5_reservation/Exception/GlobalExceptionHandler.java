@@ -10,21 +10,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex){
 
         Map<String, String> errors = new HashMap<>();
 
-        for(FieldError fieldError : ex.getBindingResult().getFieldError()){
+        for(FieldError fieldError : ex.getBindingResult().getFieldErrors()){
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ReservtionConflictException.class)
-    public ResponseEntity<String> handleConflict(ReservtionConflictException ex){
-
-
+    @ExceptionHandler(ReservationConflictException.class)
+    public ResponseEntity<String> handleConflict(ReservationConflictException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ReservationNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ReservationConflictException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
