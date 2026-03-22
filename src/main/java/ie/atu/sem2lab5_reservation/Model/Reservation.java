@@ -1,5 +1,10 @@
 package ie.atu.sem2lab5_reservation.Model;
 
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -15,8 +20,10 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Reservation {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reservationID;
 
     @NotBlank(message = "Equipment Tag is required.")

@@ -6,11 +6,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
 @RequestMapping("/reservation")
 public class ReservationController {
 
@@ -22,7 +23,25 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<Reservation> create(@Valid @RequestBody Reservation reservation){
-        Reservation saved = ReservationService.addReservation(reservation);
+        Reservation saved = reservationService.addReservation(reservation);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+
+    //Get All
+    @GetMapping
+    public ResponseEntity<List<Reservation>> getAll(){
+        return ResponseEntity.ok(reservationService.getAllReservations());
+    }
+
+    //Get One
+    @GetMapping("/{id}")
+    public ResponseEntity<Reservation> getById(@PathVariable long id){
+        return ResponseEntity.ok(reservationService.getReservationById(id));
+    }
+
+    //Get One By Date
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<Reservation>> getByDate(@PathVariable LocalDate date){
+        return ResponseEntity.ok(reservationService.getReservationsByDate(date));
     }
 }
